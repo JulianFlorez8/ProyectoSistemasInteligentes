@@ -1,0 +1,22 @@
+.grid {
+  border: 0.05rem solid gray;
+}
+
+.square {
+  border: 0.05rem solid gray;
+  height: 30px;
+  width: 30px;
+  display: block;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.wall {
+  composes: square;
+  transition: background-color 0.8s ease, box-shadow 0.8s ease;
+  background-color: purple;
+  border-color: purple;
+  border: 0.05rem solid purple;
+  box-shadow: 8px 8px 2px 1px rgba(43, 0, 37, 0.856);
+}

@@ -13,4 +13,33 @@ public class Arista {
     public Nodo origen;
     public Nodo destino;
     public double costo;
+
+    public Arista() {
+    }
+
+    public Nodo getOrigen() {
+        return origen;
+    }
+
+    public void setOrigen(Nodo origen) {
+        this.origen = origen;
+    }
+
+    public Nodo getDestino() {
+        return destino;
+    }
+
+    public void setDestino(Nodo destino) {
+        this.destino = destino;
+    }
+
+    public double getCosto() {
+        return costo;
+    }
+
+    public void setCosto(double costo) {
+        this.costo = costo;
+    }
+    
+    
 }

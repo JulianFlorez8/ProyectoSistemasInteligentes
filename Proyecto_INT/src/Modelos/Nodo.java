@@ -18,6 +18,7 @@ public class Nodo {
     private List<Nodo> listaAdyacencias;
     private Nodo predecesor;
     private boolean actualVisitado;
+    private double costo;
 
 
     public Nodo() {
@@ -28,8 +29,8 @@ public class Nodo {
         this.listaAdyacencias = new ArrayList<Nodo>();
     }
 
-    public void addAdyacencia(Nodo vertex) {
-        this.listaAdyacencias.add(vertex);
+    public void addAdyacencia(Nodo nodo) {
+        this.listaAdyacencias.add(nodo);
     }
 
     public String getNombre() {
@@ -55,6 +56,10 @@ public class Nodo {
     public void setListaAdyacencias(List<Nodo> listaAdyacencias) {
         this.listaAdyacencias = listaAdyacencias;
     }
+    
+    public void addTodasAdyacencias(List<Nodo> listaAdyacencias) {
+        this.listaAdyacencias.addAll(listaAdyacencias);
+    }
 
     public Nodo getPredecesor() {
         return predecesor;
@@ -66,6 +71,14 @@ public class Nodo {
 
     public boolean isActualVisitado() {
         return actualVisitado;
+    }
+
+    public double getCosto() {
+        return costo;
+    }
+
+    public void setCosto(double costo) {
+        this.costo = costo;
     }
 
     public void setActualVisitado(boolean actualVisitado) {

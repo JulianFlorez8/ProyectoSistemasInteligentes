@@ -89,13 +89,13 @@ public class AEstrella {
     }
 
     /**
-     * heuristica de Euclidiana raiz de la suma de los cuadrados
+     * heuristica de Euclidiana raiz de la suma de los cuadrados Raiz((X - X')**2 + (Y - Y')**2)
      *
      * @param nodo1
      * @param nodo2
      * @return
      */
     private double heuristicaEuclidiana(Nodo nodo1, Nodo nodo2) {
-        return Math.sqrt(Math.pow(Math.abs(nodo1.getX() - nodo2.getX()), 2) + Math.pow(Math.abs(nodo1.getY() - nodo2.getY()),2));
+        return Math.sqrt(Math.pow((nodo1.getX() - nodo2.getX()), 2) + Math.pow((nodo1.getY() - nodo2.getY()),2));
     }
 }

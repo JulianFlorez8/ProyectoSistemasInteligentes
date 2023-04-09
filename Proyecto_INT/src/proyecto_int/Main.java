@@ -1,67 +1,56 @@
-package proyecto_int;
+package bomberman;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import Constantes.ConstantesGlobales;
+import Mapas.Mapa;
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.FileReader;
+import java.util.ArrayList;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.scene.paint.Color;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
-public class Main {
+/**
+ *
+ * * @author julian y migue
+ */
+public class Main extends Application {
 
-    private JPanel panel1;
-    private JButton cargarArchivoButton;
+    ArrayList<String[]> mapa;
 
-
-    public Main() {
-
+    @Override
+    public void start(Stage escenario) {
+        JFileChooser fc = new JFileChooser();
+        fc.showOpenDialog(null);
+        File archivo = fc.getSelectedFile();
         try {
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        cargarArchivoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent a) {
-                JFileChooser fileChooser = new JFileChooser();
-                int result = fileChooser.showOpenDialog(null);
-
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-                    String filePath = selectedFile.getAbsolutePath();
-
-                    System.out.println(filePath);
-
-                    try {
-                        // imprimir linea por linea
-                        //Files.lines(Paths.get(filePath)).forEach(System.out::println);
-
-                        //imprimir caracter por caracter
-                        Files.lines(Paths.get(filePath)).forEach(line -> {
-                            char[] characters = line.toCharArray();
-                            for (char c : characters) {
-                                System.out.println(c);
-                            }
-                        });
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+            FileReader fr = new FileReader(archivo);
+            BufferedReader br = new BufferedReader(fr);
+            mapa = new ArrayList<String[]>();
+            String linea = "";
+            while (((linea = br.readLine()) != null)) {
+                mapa.add(linea.split(","));
+                System.out.println(linea);
             }
-        });
+            JOptionPane.showMessageDialog(null, "Mapa cargado correctamente");
+            escenario.setTitle(ConstantesGlobales.NOMBRE + ConstantesGlobales.VERSION);
+            Mapa.configurarMapa(mapa);
+
+            Scene s = Mapa.getMapa();
+            escenario.setScene(s);
+            escenario.show();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se logro cargar el mapa");
+        }
+
     }
 
     public static void main(String[] args) {
-        Main app = new Main();
-        JFrame frame = new JFrame("App");
-        frame.setSize(500, 500); // Define el tamaño de la ventana
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-        frame.setContentPane(app.panel1);
+        launch(args);
     }
 
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-    }
 }

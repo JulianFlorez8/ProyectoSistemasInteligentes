@@ -1,17 +1,20 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package RecursosMapa;
 
-import bomberman.Renderizado;
 import Animaciones.Disfraz;
-import Constantes.ConstantesGlobales;
-import javafx.scene.paint.Color;
-import Entidades.EntidadEstatica;
 import Entidades.Entidad;
+import Entidades.EntidadEstatica;
+import bomberman.Renderizado;
 
 /**
  *
- * * @author julian y migue
+ * @author NEWSHORE_
  */
-public class ParedIndestructible implements EntidadEstatica {
+public class Puerta implements EntidadEstatica {
     public int posicionX = 0;
     public int posicionY = 0;
     private int alto;
@@ -20,17 +23,16 @@ public class ParedIndestructible implements EntidadEstatica {
     HitboxMuro limite;
 
 
-    public ParedIndestructible (int x, int y) {
+    public Puerta (int x, int y) {
     	posicionX = x;
     	posicionY = y;
 
-    	ancho = 20;
-    	alto = 20;
+    	ancho = 0;
+    	alto = 0;
 
-    	disfraz = new Disfraz(this, 16, 0, 348, 123, 1, 16, 16, 2, false);
-    	limite = new HitboxMuro(posicionX, posicionY, ancho, alto);
+    	disfraz = new Disfraz(this, 16, 0, 349, 93, 1, 16, 16, 2, false);
+    	limite = new HitboxMuro(1, 1, 1, 1);
     }
-
 
     @Override
     public boolean isColision(Entidad b) {

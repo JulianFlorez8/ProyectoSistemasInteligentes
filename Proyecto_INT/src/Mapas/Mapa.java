@@ -9,7 +9,6 @@ import Jugador.Jugador;
 import RecursosMapa.Bomba;
 import RecursosMapa.ParedIndestructible;
 import RecursosMapa.ParedDestructible;
-import RecursosMapa.Pared;
 import Controles.ControlEventos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -19,6 +18,7 @@ import javafx.scene.paint.Color;
 import Entidades.Entidad;
 import static Constantes.ConstantesGlobales.ANCHO_CANVAS;
 import static Constantes.ConstantesGlobales.ALTO_CANVAS;
+import RecursosMapa.Puerta;
 import java.util.ArrayList;
 
 /**
@@ -53,7 +53,7 @@ public class Mapa {
         }
     }
 
-    private static void inicializar(ArrayList<String[]> mapaTxt) {
+    private static void inicializar(ArrayList<String[]> mapaTxt, int xInicio, int yInicio) {
         root = new Group();
         int anchoMapa = mapaTxt.get(0).length * 33;
         int altoMapa = mapaTxt.size() * 33;
@@ -67,7 +67,7 @@ public class Mapa {
         Renderizado.inicializar();
         CicloJuego.iniciar(contextoGraficos);
 
-        Jugador p = new Jugador();
+        Jugador p = new Jugador(xInicio, yInicio);
         setJugador(p);
 
         cargarMapa(mapaTxt);
@@ -77,7 +77,6 @@ public class Mapa {
     }
 
     public static void cargarMapa(ArrayList<String[]> mapaTxt) {
-        Vector<Pared> muros = new Vector<Pared>();
         int x = 0;
         int y = 0;
         for (String[] i : mapaTxt) {
@@ -96,6 +95,10 @@ public class Mapa {
                         break;
 
                     }
+                    case "F": {
+                        addEntidad(new Puerta(x, y));
+                        break;
+                    }
                     default: {
 
                     }
@@ -107,9 +110,9 @@ public class Mapa {
         }
     }
 
-    public static void configurarMapa(ArrayList<String[]> mapaTxt) {
+    public static void configurarMapa(ArrayList<String[]> mapaTxt, int xInicio, int yInicio) {
         if (!mapaListo) {
-            inicializar(mapaTxt);
+            inicializar(mapaTxt, xInicio, yInicio);
             mapaListo = true;
         }
     }

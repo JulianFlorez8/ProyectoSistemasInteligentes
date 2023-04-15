@@ -15,7 +15,7 @@ import java.util.List;
 public class Nodo {
     private String nombre;
     private boolean visitado;
-    private List<Nodo> listaAdyacencias;
+    private ArrayList<Nodo> listaAdyacencias;
     private Nodo predecesor;
     private boolean actualVisitado;
     private double costo;
@@ -53,7 +53,7 @@ public class Nodo {
         return listaAdyacencias;
     }
 
-    public void setListaAdyacencias(List<Nodo> listaAdyacencias) {
+    public void setListaAdyacencias(ArrayList<Nodo> listaAdyacencias) {
         this.listaAdyacencias = listaAdyacencias;
     }
     

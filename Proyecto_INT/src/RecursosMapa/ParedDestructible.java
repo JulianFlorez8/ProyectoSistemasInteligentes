@@ -24,8 +24,8 @@ public class ParedDestructible implements EntidadEstatica {
     	posicionX = x;
     	posicionY = y;
 
-    	ancho = 16;
-    	alto = 16;
+    	ancho = 30;
+    	alto = 30;
 
     	disfraz = new Disfraz(this, 16, 0, 348, 153, 1, 16, 16, 2, false);
     	limite = new HitboxMuro(posicionX, posicionY, ancho, alto);

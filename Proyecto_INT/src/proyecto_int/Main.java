@@ -1,5 +1,6 @@
 package bomberman;
 
+import Algoritmos.NoInformada.BusquedadAnchura;
 import Constantes.ConstantesGlobales;
 import Mapas.Mapa;
 import Modelos.Nodo;
@@ -24,12 +25,16 @@ public class Main extends Application {
     ArrayList<Nodo[]> mapaNodos;
     int[] inicio;
     int[] fin;
+    Nodo nodoInicial;
+    Nodo nodoFinal;
+    String [] nombresNodos = "ABCDEFGHIJKLMNOPQRSTQWXYZabcdefghijqlmnopqrstq".split("");
 
     @Override
     public void start(Stage escenario) {
         JFileChooser fc = new JFileChooser();
         fc.showOpenDialog(null);
         File archivo = fc.getSelectedFile();
+        int selection =-1;
         try {
             FileReader fr = new FileReader(archivo);
             BufferedReader br = new BufferedReader(fr);
@@ -42,15 +47,18 @@ public class Main extends Application {
 
             escenario.setTitle(ConstantesGlobales.NOMBRE + ConstantesGlobales.VERSION);
             buscarInicioFinal(mapa);
-            //imprimir();
+            imprimir();
             Mapa.configurarMapa(mapa, inicio[0], inicio[1]);
             Scene s = Mapa.getMapa();
             escenario.setScene(s);
             agregarAdyacencias();
             JOptionPane.showMessageDialog(null, "Mapa cargado correctamente");
-            String[] options = {"Anchura", "Profundidad", "Costo Uniforme", "Beam Search", "Hill climbing", "A estrella"};
-            int selection = JOptionPane.showOptionDialog(null, "Tipo de algoritmo a aplicar:", "Hora de jugar Bomberman!", 0, 3, null, options, options[0]);
+            String[] options = {"Anchura", "Profundidad recursivo", "Profundidad iterativo", "Costo Uniforme", "Beam Search", "Hill climbing", "A estrella"};
+            selection = JOptionPane.showOptionDialog(null, "Tipo de algoritmo a aplicar:", "Hora de jugar Bomberman!", 0, 3, null, options, options[0]);
             System.out.println(selection);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se logro cargar el mapa" + e);
+        }
             switch (selection) {
 
                 case 0: {
@@ -65,13 +73,21 @@ public class Main extends Application {
                 case 1: {
                     profundidad();
 
-                    System.out.println("Ejecución Profundidad");
+                    System.out.println("Ejecución Profundidad recursivo");
+
+                    break;
+
+                }
+                case 2: {
+                    profundidad();
+
+                    System.out.println("Ejecución Profundidad iterativo");
 
                     break;
 
                 }
 
-                case 2: {
+                case 3: {
                     costoUniforme();
                     System.out.println("Ejecución Costo uniforme");
 
@@ -79,7 +95,7 @@ public class Main extends Application {
 
                 }
 
-                case 3: {
+                case 4: {
                     beamSearch();
                     System.out.println("Ejecución Beam Search");
 
@@ -87,7 +103,7 @@ public class Main extends Application {
 
                 }
 
-                case 4: {
+                case 5: {
                     hillClimbing();
                     System.out.println("Ejecución Jill Climbing");
 
@@ -95,7 +111,7 @@ public class Main extends Application {
 
                 }
 
-                case 5: {
+                case 6: {
                     aEstrella();
                     System.out.println("Ejecucion A*");
 
@@ -111,9 +127,7 @@ public class Main extends Application {
             }
             escenario.show();
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "No se logro cargar el mapa" + e);
-        }
+        
 
     }
 
@@ -135,8 +149,10 @@ public class Main extends Application {
                 switch (j) {
 
                     case "I": {
-                        filaTemporal[x] = new Nodo(x + "" + y);
+                        
+                        filaTemporal[x] = new Nodo(nombresNodos[x]+"-"+nombresNodos[y]);
                         //this.agregarAdyacencias(mapaTxt, x, y);
+                        nodoInicial = filaTemporal[x];
                         inicio[0] = x * 33;
                         inicio[1] = y * 32;
                         break;
@@ -144,8 +160,9 @@ public class Main extends Application {
                     }
 
                     case "F": {
-                        filaTemporal[x] = new Nodo(x + "" + y);
+                        filaTemporal[x] = new Nodo(nombresNodos[x]+"-"+nombresNodos[y]);
                         //this.agregarAdyacencias(mapaTxt, x, y);
+                        nodoFinal = filaTemporal[x];
                         fin[0] = x * 33;
                         fin[1] = y * 32;
                         break;
@@ -158,7 +175,7 @@ public class Main extends Application {
 
                     }
                     case "C": {
-                        filaTemporal[x] = new Nodo(x + "" + y);
+                        filaTemporal[x] = new Nodo(nombresNodos[x]+"-"+nombresNodos[y]);
                         break;
 
                     }
@@ -181,7 +198,7 @@ public class Main extends Application {
                 if (j != null) {
                     impreso+=j.getNombre();
                 } else {
-                    impreso+="null";
+                    impreso+="---";
                     
                 }
 
@@ -216,7 +233,8 @@ public class Main extends Application {
     }
 
     public void anchura() {
-
+        BusquedadAnchura algoritmo = new BusquedadAnchura();
+        algoritmo.bfs(nodoInicial, nodoFinal.getNombre());
     }
 
     public void profundidad() {

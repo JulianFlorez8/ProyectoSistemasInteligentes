@@ -15,13 +15,19 @@ import java.util.Queue;
  */
 public class BusquedadAnchura {
 
-    public void bfs(Nodo root) {
+    public  void bfs(Nodo root, String buscado) {
+        System.out.println(root);
         Queue<Nodo> queue = new LinkedList<Nodo>();
         root.setVisitado(true);
         queue.add(root);
         while (!queue.isEmpty()) {
             Nodo nodoActual = queue.remove();
-            System.out.println(nodoActual + "-");
+            System.out.println(nodoActual);
+            if(nodoActual.getNombre().equals(buscado))
+            {
+                System.out.println("encontrado");
+                break;
+            }
 
             for (Nodo nodo : nodoActual.getListaAdyacencias()) {
                 if (!nodo.isVisitado()) {

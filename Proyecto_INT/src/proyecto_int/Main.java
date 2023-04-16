@@ -42,58 +42,60 @@ public class Main extends Application {
 
             escenario.setTitle(ConstantesGlobales.NOMBRE + ConstantesGlobales.VERSION);
             buscarInicioFinal(mapa);
-            imprimir();
+            //imprimir();
             Mapa.configurarMapa(mapa, inicio[0], inicio[1]);
             Scene s = Mapa.getMapa();
             escenario.setScene(s);
+            agregarAdyacencias();
             JOptionPane.showMessageDialog(null, "Mapa cargado correctamente");
             String[] options = {"Anchura", "Profundidad", "Costo Uniforme", "Beam Search", "Hill climbing", "A estrella"};
             int selection = JOptionPane.showOptionDialog(null, "Tipo de algoritmo a aplicar:", "Hora de jugar Bomberman!", 0, 3, null, options, options[0]);
+            System.out.println(selection);
             switch (selection) {
 
-                case 1: {
+                case 0: {
 
-                    System.out.println("Usted eligió la opcion 1.");
+                    System.out.println("Ejecución Anchura");
                     anchura();
 
                     break;
 
                 }
 
-                case 2: {
+                case 1: {
                     profundidad();
 
-                    System.out.println("Usted eligió la opcion 2.");
+                    System.out.println("Ejecución Profundidad");
+
+                    break;
+
+                }
+
+                case 2: {
+                    costoUniforme();
+                    System.out.println("Ejecución Costo uniforme");
 
                     break;
 
                 }
 
                 case 3: {
-                    costoUniforme();
-                    System.out.println("Usted eligió la opcion 3.");
+                    beamSearch();
+                    System.out.println("Ejecución Beam Search");
 
                     break;
 
                 }
 
                 case 4: {
-                    beamSearch();
-                    System.out.println("Usted eligió la opcion 3.");
+                    hillClimbing();
+                    System.out.println("Ejecución Jill Climbing");
 
                     break;
 
                 }
 
                 case 5: {
-                    hillClimbing();
-                    System.out.println("Usted eligió la opcion 3.");
-
-                    break;
-
-                }
-
-                case 6: {
                     aEstrella();
                     System.out.println("Ejecucion A*");
 
@@ -190,7 +192,22 @@ public class Main extends Application {
         
     }
 
-    public void agregarAdyacencias(ArrayList<String[]> mapaTxt, int x, int y) {
+    public void agregarAdyacencias() {
+        int x = 0;
+        int y = 0;
+        for (Nodo[] i : mapaNodos) {
+            x= 0;
+            for (Nodo j : i) {
+                if (j != null) {
+                    if(mapaNodos.get(y-1)[x]!=null) { mapaNodos.get(y-1)[x].addAdyacencia(j);};
+                    if(mapaNodos.get(y+1)[x]!=null) { mapaNodos.get(y+1)[x].addAdyacencia(j);};
+                    if(mapaNodos.get(y)[x-1]!=null) { mapaNodos.get(y)[x-1].addAdyacencia(j);};
+                    if(mapaNodos.get(y)[x+1]!=null) { mapaNodos.get(y)[x+1].addAdyacencia(j);};
+                } 
+                x++;
+            }
+            y++;
+        }
 
     }
 

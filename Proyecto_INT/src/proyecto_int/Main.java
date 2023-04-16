@@ -21,7 +21,7 @@ import javax.swing.JOptionPane;
 public class Main extends Application {
 
     ArrayList<String[]> mapa;
-    ArrayList<ArrayList<Nodo>> mapaNodos;
+    ArrayList<Nodo[]> mapaNodos;
     int[] inicio;
     int[] fin;
 
@@ -39,9 +39,10 @@ public class Main extends Application {
                 mapa.add(linea.split(","));
                 System.out.println(linea);
             }
-            
+
             escenario.setTitle(ConstantesGlobales.NOMBRE + ConstantesGlobales.VERSION);
             buscarInicioFinal(mapa);
+            imprimir();
             Mapa.configurarMapa(mapa, inicio[0], inicio[1]);
             Scene s = Mapa.getMapa();
             escenario.setScene(s);
@@ -53,12 +54,14 @@ public class Main extends Application {
                 case 1: {
 
                     System.out.println("Usted eligió la opcion 1.");
+                    anchura();
 
                     break;
 
                 }
 
                 case 2: {
+                    profundidad();
 
                     System.out.println("Usted eligió la opcion 2.");
 
@@ -67,7 +70,7 @@ public class Main extends Application {
                 }
 
                 case 3: {
-
+                    costoUniforme();
                     System.out.println("Usted eligió la opcion 3.");
 
                     break;
@@ -75,7 +78,7 @@ public class Main extends Application {
                 }
 
                 case 4: {
-
+                    beamSearch();
                     System.out.println("Usted eligió la opcion 3.");
 
                     break;
@@ -83,7 +86,7 @@ public class Main extends Application {
                 }
 
                 case 5: {
-
+                    hillClimbing();
                     System.out.println("Usted eligió la opcion 3.");
 
                     break;
@@ -91,8 +94,8 @@ public class Main extends Application {
                 }
 
                 case 6: {
-
-                    System.out.println("Usted eligió la opcion 3.");
+                    aEstrella();
+                    System.out.println("Ejecucion A*");
 
                     break;
 
@@ -107,7 +110,7 @@ public class Main extends Application {
             escenario.show();
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "No se logro cargar el mapa"+e);
+            JOptionPane.showMessageDialog(null, "No se logro cargar el mapa" + e);
         }
 
     }
@@ -122,16 +125,15 @@ public class Main extends Application {
         int y = 0;
         inicio = new int[2];
         fin = new int[2];
-        mapaNodos = new ArrayList<ArrayList<Nodo>>();
+        mapaNodos = new ArrayList<Nodo[]>();
         for (String[] i : mapaTxt) {
             x = 0;
-            ArrayList<Nodo> filaTemporal = new ArrayList<Nodo>();
-
+            Nodo[] filaTemporal = new Nodo[i.length];
             for (String j : i) {
                 switch (j) {
 
                     case "I": {
-                        //filaTemporal.add(new Nodo(x + "" + y));
+                        filaTemporal[x] = new Nodo(x + "" + y);
                         //this.agregarAdyacencias(mapaTxt, x, y);
                         inicio[0] = x * 33;
                         inicio[1] = y * 32;
@@ -140,7 +142,7 @@ public class Main extends Application {
                     }
 
                     case "F": {
-                        //filaTemporal.add(new Nodo(x + "" + y));
+                        filaTemporal[x] = new Nodo(x + "" + y);
                         //this.agregarAdyacencias(mapaTxt, x, y);
                         fin[0] = x * 33;
                         fin[1] = y * 32;
@@ -148,13 +150,13 @@ public class Main extends Application {
 
                     }
                     case "M": {
+                        filaTemporal[x] = null;
                         //filaTemporal.add(null);
                         break;
 
                     }
                     case "C": {
-                        //filaTemporal.add(new Nodo(x + "" + y));
-                        //this.agregarAdyacencias(mapaTxt, x, y);
+                        filaTemporal[x] = new Nodo(x + "" + y);
                         break;
 
                     }
@@ -170,27 +172,54 @@ public class Main extends Application {
         }
     }
 
+    public void imprimir() {
+        String impreso ="";
+        for (Nodo[] i : mapaNodos) {
+            for (Nodo j : i) {
+                if (j != null) {
+                    impreso+=j.getNombre();
+                } else {
+                    impreso+="null";
+                    
+                }
+
+            }
+            System.out.println(impreso+ '\n');
+            impreso ="";
+        }
+        
+    }
+
     public void agregarAdyacencias(ArrayList<String[]> mapaTxt, int x, int y) {
-        ArrayList<Nodo> lista = new ArrayList<Nodo>();
-        if(x>0){
-            lista.add(new Nodo(x-1 + "" + y));
-            
-        }
-        if(x<(mapaTxt.get(0).length-1)){
-            lista.add(new Nodo(x+1 + "" + y));
-        }
-        if(y>0){
-            lista.add(new Nodo(x + "" + (y-1)));
-            
-        }
-        if(y<(mapaTxt.size()+1)){
-            lista.add(new Nodo(x + "" + (y+1)));
-        }
 
     }
 
     public void crearArbol(ArrayList<String[]> mapaTxt) {
 
+    }
+
+    public void anchura() {
+
+    }
+
+    public void profundidad() {
+
+    }
+
+    private void costoUniforme() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void beamSearch() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void hillClimbing() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void aEstrella() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

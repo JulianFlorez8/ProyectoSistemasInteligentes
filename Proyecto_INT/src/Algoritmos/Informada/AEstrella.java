@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Algoritmos.Informada.aEstrella;
+package Algoritmos.Informada;
 
 import Algoritmos.Informada.HeuristicaEnum;
 import Modelos.Nodo;

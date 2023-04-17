@@ -59,6 +59,15 @@ public class Nodo implements Comparable<Nodo>{
     public List<Nodo> getListaAdyacencias() {
         return listaAdyacencias;
     }
+    
+    public List<Arista> generaAristasAdyacentes(){
+        List<Arista> aristas = new ArrayList<Arista>();
+        for(Nodo nodo: this.listaAdyacencias)
+        {
+            aristas.add(new Arista(nodo));
+        }
+        return aristas;
+    }
 
     public void setListaAdyacencias(ArrayList<Nodo> listaAdyacencias) {
         this.listaAdyacencias = listaAdyacencias;

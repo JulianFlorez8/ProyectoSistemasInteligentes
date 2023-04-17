@@ -1,18 +1,20 @@
 package proyecto_int;
 
 import Algoritmos.Informada.HeuristicaEnum;
-import Algoritmos.Informada.aEstrella.AEstrella;
+import Algoritmos.Informada.AEstrella;
 import Algoritmos.NoInformada.BusquedadAnchura;
 import Algoritmos.NoInformada.BusquedadProfundidad;
+import Algoritmos.NoInformada.CostoUniforme;
 import Constantes.ConstantesGlobales;
 import Constantes.Direccion;
 import Jugador.Jugador;
 import Mapas.Mapa;
+import Modelos.Arista;
 import Modelos.Nodo;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
+import java.util.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -57,9 +59,9 @@ public class Main extends Application {
             Scene s = Mapa.getMapa();
             escenario.setScene(s);
             agregarAdyacencias();
-            
+
             JOptionPane.showMessageDialog(null, "Mapa cargado correctamente");
-            String[] options = {"Anchura", "Profundidad recursivo", "Profundidad iterativo", 
+            String[] options = {"Anchura", "Profundidad recursivo", "Profundidad iterativo",
                 "Costo Uniforme", "Beam Search", "Hill climbing", "A estrella Euclidiana", "A estrella Manhattan"};
             selection = JOptionPane.showOptionDialog(null, "Tipo de algoritmo a aplicar:", "Hora de jugar Bomberman!", 0, 3, null, options, options[0]);
         } catch (Exception e) {
@@ -158,7 +160,7 @@ public class Main extends Application {
 
                     case "I": {
 
-                        filaTemporal[x] = new Nodo(nombresNodos[x] + "-" + nombresNodos[y],x*33,y*32);
+                        filaTemporal[x] = new Nodo(nombresNodos[x] + "-" + nombresNodos[y], x * 33, y * 32);
                         //this.agregarAdyacencias(mapaTxt, x, y);
                         nodoInicial = filaTemporal[x];
                         inicio[0] = x * 33;
@@ -168,7 +170,7 @@ public class Main extends Application {
                     }
 
                     case "F": {
-                        filaTemporal[x] = new Nodo(nombresNodos[x] + "-" + nombresNodos[y],x*33,y*32);
+                        filaTemporal[x] = new Nodo(nombresNodos[x] + "-" + nombresNodos[y], x * 33, y * 32);
                         //this.agregarAdyacencias(mapaTxt, x, y);
                         nodoFinal = filaTemporal[x];
                         fin[0] = x * 33;
@@ -183,7 +185,7 @@ public class Main extends Application {
 
                     }
                     case "C": {
-                        filaTemporal[x] = new Nodo(nombresNodos[x] + "-" + nombresNodos[y],x*33,y*32);
+                        filaTemporal[x] = new Nodo(nombresNodos[x] + "-" + nombresNodos[y], x * 33, y * 32);
                         System.out.println(filaTemporal[x]);
                         break;
 
@@ -263,13 +265,24 @@ public class Main extends Application {
             algoritmo.iterativo(nodoInicial, nodoFinal.getNombre());
 
         }
-        System.out.println("Camino asignado"+algoritmo.getCamino());
+        System.out.println("Camino asignado" + algoritmo.getCamino());
         Mapa.getJugador().setCamino(algoritmo.getCamino());
 
     }
 
     private void costoUniforme() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Map<String, List<Arista>> conexiones = new HashMap<>();
+        for (Nodo[] i : mapaNodos) {
+            for (Nodo j : i) {
+                if (j != null) {
+                    conexiones.put(j.getNombre(), j.generaAristasAdyacentes());
+                }
+            }
+        }
+        CostoUniforme algoritmo = new CostoUniforme();
+        System.out.println(algoritmo.search(conexiones,nodoInicial, nodoFinal.getNombre()));
+        Mapa.getJugador().setCamino(algoritmo.getCamino());
+
     }
 
     private void beamSearch() {
@@ -284,7 +297,7 @@ public class Main extends Application {
         AEstrella algoritmo = new AEstrella();
         algoritmo.busquedadAEstrella(nodoInicial, nodoFinal, tipo);
         Mapa.getJugador().setCamino(algoritmo.getCamino(nodoFinal));
-        
+
     }
 
 }

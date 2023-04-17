@@ -14,8 +14,9 @@ public class Arista {
     public Nodo destino;
     public double costo;
 
-    public Arista() {
+    public Arista(Nodo destino) {
         this.costo = 10;
+        this.destino = destino;
     }
 
     public Nodo getOrigen() {

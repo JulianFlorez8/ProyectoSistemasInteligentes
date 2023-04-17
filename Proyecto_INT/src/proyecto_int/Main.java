@@ -2,6 +2,7 @@ package proyecto_int;
 
 import Algoritmos.Informada.HeuristicaEnum;
 import Algoritmos.Informada.AEstrella;
+import Algoritmos.Informada.BeamSearch;
 import Algoritmos.Informada.HillClimbing;
 import Algoritmos.NoInformada.BusquedadAnchura;
 import Algoritmos.NoInformada.BusquedadProfundidad;
@@ -36,6 +37,7 @@ public class Main extends Application {
     Nodo nodoInicial;
     Nodo nodoFinal;
     String[] nombresNodos = "ABCDEFGHIJKLMNOPQRSTQWXYZabcdefghijqlmnopqrstq".split("");
+    int beta = 0;
 
     @Override
     public void start(Stage escenario) throws InterruptedException {
@@ -105,7 +107,7 @@ public class Main extends Application {
             }
 
             case 4: {
-                beamSearch();
+                beamSearch(HeuristicaEnum.Euclidiana);
                 System.out.println("Ejecución Beam Search");
 
                 break;
@@ -245,6 +247,18 @@ public class Main extends Application {
             }
             y++;
         }
+        
+        for (Nodo[] i : mapaNodos) {
+            for (Nodo j : i) {
+                if (j != null) {
+                    if (j.getListaAdyacencias().size() > beta){
+                        beta = j.getListaAdyacencias().size();
+                    }
+                } 
+            }
+        }
+        
+        //System.out.println(beta);
 
     }
 
@@ -286,8 +300,10 @@ public class Main extends Application {
 
     }
 
-    private void beamSearch() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void beamSearch(HeuristicaEnum tipo) {
+        BeamSearch algoritmo = new BeamSearch();
+        algoritmo.busquedaBeamSearch(nodoInicial, nodoFinal, tipo, beta);
+        Mapa.getJugador().setCamino(algoritmo.getCamino(nodoFinal));  
     }
 
     private void hillClimbing() {

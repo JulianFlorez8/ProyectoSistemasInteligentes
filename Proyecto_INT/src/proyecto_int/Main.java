@@ -2,6 +2,7 @@ package proyecto_int;
 
 import Algoritmos.Informada.HeuristicaEnum;
 import Algoritmos.Informada.AEstrella;
+import Algoritmos.Informada.HillClimbing;
 import Algoritmos.NoInformada.BusquedadAnchura;
 import Algoritmos.NoInformada.BusquedadProfundidad;
 import Algoritmos.NoInformada.CostoUniforme;
@@ -113,7 +114,7 @@ public class Main extends Application {
 
             case 5: {
                 hillClimbing();
-                System.out.println("Ejecución Jill Climbing");
+                System.out.println("Ejecución Hill Climbing");
 
                 break;
 
@@ -290,7 +291,9 @@ public class Main extends Application {
     }
 
     private void hillClimbing() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        HillClimbing algoritmo = new HillClimbing(nodoInicial);
+        algoritmo.hillClimbing(nodoInicial, nodoFinal);
+        Mapa.getJugador().setCamino(algoritmo.getCamino());
     }
 
     private void aEstrella(HeuristicaEnum tipo) {

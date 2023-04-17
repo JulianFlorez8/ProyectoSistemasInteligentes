@@ -7,6 +7,8 @@ package Modelos;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -60,6 +62,28 @@ public class Nodo implements Comparable<Nodo>{
         return listaAdyacencias;
     }
     
+    public Nodo getMejorHijoNoVisitado(Nodo nodo2){
+        List<Nodo> nodos = listaAdyacencias.stream().filter(p -> !p.isVisitado()).collect(Collectors.toList());
+        PriorityQueue<Nodo> nodoPrio = new PriorityQueue<Nodo>();
+        for(Nodo nodo: nodos){
+            nodo.setfValor(this.heuristicaEuclidiana(nodo2));
+            nodoPrio.add(nodo);
+        }
+        return nodoPrio.poll();
+        
+    }
+    
+    public boolean isTodosHijosVisitados(){
+        Nodo nodo = listaAdyacencias.stream().filter(p -> !p.isVisitado()).findFirst().orElse(null);
+        if(nodo!=null)
+        {
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+    
     public List<Arista> generaAristasAdyacentes(){
         List<Arista> aristas = new ArrayList<Arista>();
         for(Nodo nodo: this.listaAdyacencias)
@@ -107,6 +131,19 @@ public class Nodo implements Comparable<Nodo>{
                 + "nombre = '" + nombre + '\''
                 + "X=" + x + ", Y= " + y
                 + '}';
+    }
+    
+    
+     /**
+     * heuristica de Euclidiana raiz de la suma de los cuadrados Raiz((X -
+     * X')**2 + (Y - Y')**2)
+     *
+     * @param nodo1
+     * @param nodo2
+     * @return
+     */
+    private double heuristicaEuclidiana(Nodo nodo2) {
+        return Math.sqrt(Math.pow((getX() - nodo2.getX()), 2) + Math.pow((getY() - nodo2.getY()), 2));
     }
 
     public int getX() {

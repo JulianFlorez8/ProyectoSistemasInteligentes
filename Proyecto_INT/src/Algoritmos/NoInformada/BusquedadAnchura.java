@@ -18,11 +18,8 @@ import java.util.Stack;
  * @author Julian y Miguel
  */
 public class BusquedadAnchura {
-    private ArrayList<Nodo> camino = new ArrayList<Nodo>();
 
-    public ArrayList<Nodo> getCamino() {
-        return camino;
-    }
+    private ArrayList<Nodo> camino = new ArrayList<Nodo>();
 
     public void bfs(Nodo root, String buscado) {
         System.out.println(root);
@@ -36,7 +33,7 @@ public class BusquedadAnchura {
             Nodo nodoActual = queue.remove();
             //System.out.println(nodoActual); //para imprimir los nodos que se van expandiendo
 
-            if(nodoActual.getNombre().equals(buscado)) {
+            if (nodoActual.getNombre().equals(buscado)) {
                 //System.out.println("encontrado");
 
                 // seguimos el camino de padres desde el nodo buscado hasta la raíz
@@ -69,5 +66,9 @@ public class BusquedadAnchura {
                 }
             }
         }
+    }
+
+    public ArrayList<Nodo> getCamino() {
+        return camino;
     }
 }

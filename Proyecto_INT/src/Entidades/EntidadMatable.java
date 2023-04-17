@@ -6,7 +6,7 @@ package Entidades;
  */
 public interface EntidadMatable extends Entidad {
 
-    public void morit();
+    public void morir();
     public void reducirVida(int dano);
     public int getVida();
 

@@ -6,6 +6,7 @@
 package Algoritmos.NoInformada;
 
 import Modelos.Nodo;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -17,6 +18,11 @@ import java.util.Stack;
  * @author Julian y Miguel
  */
 public class BusquedadAnchura {
+    private ArrayList<Nodo> camino = new ArrayList<Nodo>();
+
+    public ArrayList<Nodo> getCamino() {
+        return camino;
+    }
 
     public void bfs(Nodo root, String buscado) {
         System.out.println(root);
@@ -35,17 +41,19 @@ public class BusquedadAnchura {
 
                 // seguimos el camino de padres desde el nodo buscado hasta la raíz
                 Nodo nodo = nodoActual;
-                Stack<Nodo> camino = new Stack<Nodo>(); // pila de nodos en el camino
-                camino.push(nodo);
+                Stack<Nodo> camino1 = new Stack<Nodo>(); // pila de nodos en el camino
+                camino1.push(nodo);
                 while (nodo != root) {
                     nodo = padres.get(nodo);
-                    camino.push(nodo);
+                    camino1.push(nodo);
                 }
 
                 // desapilamos los nodos de la pila para imprimirlos en orden
-                System.out.print(camino.pop().getNombre());
-                while (!camino.isEmpty()) {
-                    System.out.print(" -> " + camino.pop().getNombre());
+                System.out.print(camino1.pop().getNombre());
+                while (!camino1.isEmpty()) {
+                    Nodo tmp = camino1.pop();
+                    camino.add(tmp);
+                    System.out.print(" -> " + tmp.getNombre());
                 }
 
                 break;

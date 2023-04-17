@@ -13,19 +13,23 @@ import java.util.List;
  * @author Julian y Miguel
  */
 public class Nodo {
+
     private String nombre;
     private boolean visitado;
     private ArrayList<Nodo> listaAdyacencias;
     private Nodo predecesor;
     private boolean actualVisitado;
     private double costo;
-
+    private int x;
+    private int y;
 
     public Nodo() {
     }
 
-    public Nodo(String nombre) {
+    public Nodo(String nombre, int x, int y) {
         this.nombre = nombre;
+        this.x = x;
+        this.y = y;
         this.listaAdyacencias = new ArrayList<Nodo>();
     }
 
@@ -56,7 +60,7 @@ public class Nodo {
     public void setListaAdyacencias(ArrayList<Nodo> listaAdyacencias) {
         this.listaAdyacencias = listaAdyacencias;
     }
-    
+
     public void addTodasAdyacencias(List<Nodo> listaAdyacencias) {
         this.listaAdyacencias.addAll(listaAdyacencias);
     }
@@ -87,9 +91,18 @@ public class Nodo {
 
     @Override
     public String toString() {
-        return "Nodo { " +
-                "nombre = '" + nombre + '\'' +
-                '}';
+        return "Nodo { "
+                + "nombre = '" + nombre + '\''
+                + "X=" + x + ", Y= " + y
+                + '}';
     }
-    
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
 }

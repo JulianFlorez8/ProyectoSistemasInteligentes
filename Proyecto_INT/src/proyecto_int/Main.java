@@ -1,7 +1,10 @@
-package bomberman;
+package proyecto_int;
 
 import Algoritmos.NoInformada.BusquedadAnchura;
+import Algoritmos.NoInformada.BusquedadProfundidad;
 import Constantes.ConstantesGlobales;
+import Constantes.Direccion;
+import Jugador.Jugador;
 import Mapas.Mapa;
 import Modelos.Nodo;
 import java.io.BufferedReader;
@@ -27,14 +30,14 @@ public class Main extends Application {
     int[] fin;
     Nodo nodoInicial;
     Nodo nodoFinal;
-    String [] nombresNodos = "ABCDEFGHIJKLMNOPQRSTQWXYZabcdefghijqlmnopqrstq".split("");
+    String[] nombresNodos = "ABCDEFGHIJKLMNOPQRSTQWXYZabcdefghijqlmnopqrstq".split("");
 
     @Override
-    public void start(Stage escenario) {
+    public void start(Stage escenario) throws InterruptedException {
         JFileChooser fc = new JFileChooser();
         fc.showOpenDialog(null);
         File archivo = fc.getSelectedFile();
-        int selection =-1;
+        int selection = -1;
         try {
             FileReader fr = new FileReader(archivo);
             BufferedReader br = new BufferedReader(fr);
@@ -52,83 +55,80 @@ public class Main extends Application {
             Scene s = Mapa.getMapa();
             escenario.setScene(s);
             agregarAdyacencias();
+            
             JOptionPane.showMessageDialog(null, "Mapa cargado correctamente");
             String[] options = {"Anchura", "Profundidad recursivo", "Profundidad iterativo", "Costo Uniforme", "Beam Search", "Hill climbing", "A estrella"};
             selection = JOptionPane.showOptionDialog(null, "Tipo de algoritmo a aplicar:", "Hora de jugar Bomberman!", 0, 3, null, options, options[0]);
-            System.out.println(selection);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "No se logro cargar el mapa" + e);
         }
-            switch (selection) {
+        switch (selection) {
 
-                case 0: {
+            case 0: {
 
-                    System.out.println("Ejecución Anchura");
-                    anchura();
+                System.out.println("Ejecución Anchura");
+                anchura();
 
-                    break;
+                break;
 
-                }
-
-                case 1: {
-                    profundidad();
-
-                    System.out.println("Ejecución Profundidad recursivo");
-
-                    break;
-
-                }
-                case 2: {
-                    profundidad();
-
-                    System.out.println("Ejecución Profundidad iterativo");
-
-                    break;
-
-                }
-
-                case 3: {
-                    costoUniforme();
-                    System.out.println("Ejecución Costo uniforme");
-
-                    break;
-
-                }
-
-                case 4: {
-                    beamSearch();
-                    System.out.println("Ejecución Beam Search");
-
-                    break;
-
-                }
-
-                case 5: {
-                    hillClimbing();
-                    System.out.println("Ejecución Jill Climbing");
-
-                    break;
-
-                }
-
-                case 6: {
-                    aEstrella();
-                    System.out.println("Ejecucion A*");
-
-                    break;
-
-                }
-
-                default: {
-
-                    System.out.println("Opcion incorrecta");
-
-                }
             }
-            escenario.show();
 
-        
+            case 1: {
+                profundidad("Recursivo");
 
+                System.out.println("Ejecución Profundidad recursivo");
+
+                break;
+
+            }
+            case 2: {
+                profundidad("Iterativo");
+
+                System.out.println("Ejecución Profundidad iterativo");
+
+                break;
+
+            }
+
+            case 3: {
+                costoUniforme();
+                System.out.println("Ejecución Costo uniforme");
+
+                break;
+
+            }
+
+            case 4: {
+                beamSearch();
+                System.out.println("Ejecución Beam Search");
+
+                break;
+
+            }
+
+            case 5: {
+                hillClimbing();
+                System.out.println("Ejecución Jill Climbing");
+
+                break;
+
+            }
+
+            case 6: {
+                aEstrella();
+                System.out.println("Ejecucion A*");
+
+                break;
+
+            }
+
+            default: {
+
+                System.out.println("Opcion incorrecta");
+
+            }
+        }
+        escenario.show();
     }
 
     public static void main(String[] args) {
@@ -149,8 +149,8 @@ public class Main extends Application {
                 switch (j) {
 
                     case "I": {
-                        
-                        filaTemporal[x] = new Nodo(nombresNodos[x]+"-"+nombresNodos[y]);
+
+                        filaTemporal[x] = new Nodo(nombresNodos[x] + "-" + nombresNodos[y],x*33,y*32);
                         //this.agregarAdyacencias(mapaTxt, x, y);
                         nodoInicial = filaTemporal[x];
                         inicio[0] = x * 33;
@@ -160,7 +160,7 @@ public class Main extends Application {
                     }
 
                     case "F": {
-                        filaTemporal[x] = new Nodo(nombresNodos[x]+"-"+nombresNodos[y]);
+                        filaTemporal[x] = new Nodo(nombresNodos[x] + "-" + nombresNodos[y],x*33,y*32);
                         //this.agregarAdyacencias(mapaTxt, x, y);
                         nodoFinal = filaTemporal[x];
                         fin[0] = x * 33;
@@ -175,7 +175,8 @@ public class Main extends Application {
 
                     }
                     case "C": {
-                        filaTemporal[x] = new Nodo(nombresNodos[x]+"-"+nombresNodos[y]);
+                        filaTemporal[x] = new Nodo(nombresNodos[x] + "-" + nombresNodos[y],x*33,y*32);
+                        System.out.println(filaTemporal[x]);
                         break;
 
                     }
@@ -192,35 +193,43 @@ public class Main extends Application {
     }
 
     public void imprimir() {
-        String impreso ="";
+        String impreso = "";
         for (Nodo[] i : mapaNodos) {
             for (Nodo j : i) {
                 if (j != null) {
-                    impreso+=j.getNombre();
+                    impreso += j.getNombre() + "_";
                 } else {
-                    impreso+="---";
-                    
+                    impreso += "---";
+
                 }
 
             }
-            System.out.println(impreso+ '\n');
-            impreso ="";
+            System.out.println(impreso + '\n');
+            impreso = "";
         }
-        
+
     }
 
     public void agregarAdyacencias() {
         int x = 0;
         int y = 0;
         for (Nodo[] i : mapaNodos) {
-            x= 0;
+            x = 0;
             for (Nodo j : i) {
                 if (j != null) {
-                    if(mapaNodos.get(y-1)[x]!=null) { mapaNodos.get(y-1)[x].addAdyacencia(j);};
-                    if(mapaNodos.get(y+1)[x]!=null) { mapaNodos.get(y+1)[x].addAdyacencia(j);};
-                    if(mapaNodos.get(y)[x-1]!=null) { mapaNodos.get(y)[x-1].addAdyacencia(j);};
-                    if(mapaNodos.get(y)[x+1]!=null) { mapaNodos.get(y)[x+1].addAdyacencia(j);};
-                } 
+                    if (mapaNodos.get(y - 1)[x] != null) {
+                        mapaNodos.get(y - 1)[x].addAdyacencia(j);
+                    };
+                    if (mapaNodos.get(y + 1)[x] != null) {
+                        mapaNodos.get(y + 1)[x].addAdyacencia(j);
+                    };
+                    if (mapaNodos.get(y)[x - 1] != null) {
+                        mapaNodos.get(y)[x - 1].addAdyacencia(j);
+                    };
+                    if (mapaNodos.get(y)[x + 1] != null) {
+                        mapaNodos.get(y)[x + 1].addAdyacencia(j);
+                    };
+                }
                 x++;
             }
             y++;
@@ -235,9 +244,19 @@ public class Main extends Application {
     public void anchura() {
         BusquedadAnchura algoritmo = new BusquedadAnchura();
         algoritmo.bfs(nodoInicial, nodoFinal.getNombre());
+        Mapa.getJugador().setCamino(algoritmo.getCamino());
     }
 
-    public void profundidad() {
+    public void profundidad(String tipo) {
+        BusquedadProfundidad algoritmo = new BusquedadProfundidad(nodoInicial);
+        if (tipo == "Recursivo") {
+            algoritmo.recursivo(nodoInicial, nodoFinal.getNombre());
+        } else {
+            algoritmo.iterativo(nodoInicial, nodoFinal.getNombre());
+
+        }
+        System.out.println("Camino asignado"+algoritmo.getCamino());
+        Mapa.getJugador().setCamino(algoritmo.getCamino());
 
     }
 

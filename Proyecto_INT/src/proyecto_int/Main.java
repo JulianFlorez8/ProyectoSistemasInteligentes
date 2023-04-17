@@ -107,7 +107,7 @@ public class Main extends Application {
             }
 
             case 4: {
-                beamSearch(HeuristicaEnum.Euclidiana);
+                beamSearch(HeuristicaEnum.Manhattan);
                 System.out.println("Ejecución Beam Search");
 
                 break;
@@ -163,7 +163,7 @@ public class Main extends Application {
 
                     case "I": {
 
-                        filaTemporal[x] = new Nodo(nombresNodos[x] + "-" + nombresNodos[y], x * 33, y * 32);
+                        filaTemporal[x] = new Nodo((x-1) + "," + (y-1), x * 33, y * 32);
                         //this.agregarAdyacencias(mapaTxt, x, y);
                         nodoInicial = filaTemporal[x];
                         inicio[0] = x * 33;
@@ -173,7 +173,7 @@ public class Main extends Application {
                     }
 
                     case "F": {
-                        filaTemporal[x] = new Nodo(nombresNodos[x] + "-" + nombresNodos[y], x * 33, y * 32);
+                        filaTemporal[x] = new Nodo((x-1) + "," + (y-1), x * 33, y * 32);
                         //this.agregarAdyacencias(mapaTxt, x, y);
                         nodoFinal = filaTemporal[x];
                         fin[0] = x * 33;
@@ -188,7 +188,7 @@ public class Main extends Application {
 
                     }
                     case "C": {
-                        filaTemporal[x] = new Nodo(nombresNodos[x] + "-" + nombresNodos[y], x * 33, y * 32);
+                        filaTemporal[x] = new Nodo((x-1) + "," + (y-1), x * 33, y * 32);
                         System.out.println(filaTemporal[x]);
                         break;
 
@@ -206,11 +206,11 @@ public class Main extends Application {
     }
 
     public void imprimir() {
-        String impreso = "";
+        String impreso = "[";
         for (Nodo[] i : mapaNodos) {
             for (Nodo j : i) {
                 if (j != null) {
-                    impreso += j.getNombre() + "_";
+                    impreso +="(" + j.getNombre() + ")";
                 } else {
                     impreso += "---";
 
@@ -220,6 +220,7 @@ public class Main extends Application {
             System.out.println(impreso + '\n');
             impreso = "";
         }
+        System.out.println("]");
 
     }
 
@@ -230,15 +231,19 @@ public class Main extends Application {
             x = 0;
             for (Nodo j : i) {
                 if (j != null) {
+                    if(y-1>=0)
                     if (mapaNodos.get(y - 1)[x] != null) {
                         mapaNodos.get(y - 1)[x].addAdyacencia(j);
                     };
+                    if(y+1<mapaNodos.size())
                     if (mapaNodos.get(y + 1)[x] != null) {
                         mapaNodos.get(y + 1)[x].addAdyacencia(j);
                     };
+                    if(x-1>0)
                     if (mapaNodos.get(y)[x - 1] != null) {
                         mapaNodos.get(y)[x - 1].addAdyacencia(j);
                     };
+                    if(x+1<mapaNodos.get(y).length)
                     if (mapaNodos.get(y)[x + 1] != null) {
                         mapaNodos.get(y)[x + 1].addAdyacencia(j);
                     };

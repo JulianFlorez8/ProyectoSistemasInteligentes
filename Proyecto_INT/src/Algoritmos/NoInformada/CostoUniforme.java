@@ -99,6 +99,21 @@ public class CostoUniforme {
             System.out.println(nodo);
 
         }
+        String impresion = "[";
+        for (Nodo tmp : camino) {
+            if(camino.indexOf(tmp)==camino.size()-1)
+            {
+                impresion += "(" + tmp.getNombre() + ")";
+                
+            }else{
+                impresion += "(" + tmp.getNombre() + "),";
+            }
+            
+
+        }
+
+        System.out.println(impresion + "]");
+
 
     }
 

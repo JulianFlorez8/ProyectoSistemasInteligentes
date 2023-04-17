@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  *
  * @author Julian y Miguel
  */
-public class Nodo implements Comparable<Nodo>{
+public class Nodo implements Comparable<Nodo> {
 
     private String nombre;
     private boolean visitado;
@@ -61,33 +61,62 @@ public class Nodo implements Comparable<Nodo>{
     public List<Nodo> getListaAdyacencias() {
         return listaAdyacencias;
     }
-    
-    public Nodo getMejorHijoNoVisitado(Nodo nodo2){
+
+    public List<Nodo> getListaAdyacenciasPrioridad() {
+        Nodo[] nuevaLista = new Nodo[4];
+        int menorY = 0;
+        int mayorY = 0;
+        int menorX = 0;
+        int mayorX = 0;
+        for (Nodo nodo : listaAdyacencias) {
+
+            if (nodo.y > this.y) {
+                nuevaLista[0] = nodo;
+            }
+            else if (nodo.x < this.x) {
+                nuevaLista[1] = nodo;
+            }
+            else if (nodo.y < this.x) {
+                nuevaLista[2] = nodo;
+            }
+            else if (nodo.x > this.x) {
+                nuevaLista[3] = nodo;
+            }
+        }
+        List<Nodo> listaFinal = new ArrayList<Nodo>();
+        for (Nodo nodo : nuevaLista) {
+            if(nodo!=null){
+             listaFinal.add(nodo);   
+            }
+            
+        }
+        return listaFinal;
+
+    }
+
+    public Nodo getMejorHijoNoVisitado(Nodo nodo2) {
         List<Nodo> nodos = listaAdyacencias.stream().filter(p -> !p.isVisitado()).collect(Collectors.toList());
         PriorityQueue<Nodo> nodoPrio = new PriorityQueue<Nodo>();
-        for(Nodo nodo: nodos){
+        for (Nodo nodo : nodos) {
             nodo.setfValor(this.heuristicaEuclidiana(nodo2));
             nodoPrio.add(nodo);
         }
         return nodoPrio.poll();
-        
+
     }
-    
-    public boolean isTodosHijosVisitados(){
+
+    public boolean isTodosHijosVisitados() {
         Nodo nodo = listaAdyacencias.stream().filter(p -> !p.isVisitado()).findFirst().orElse(null);
-        if(nodo!=null)
-        {
+        if (nodo != null) {
             return false;
-        }
-        else{
+        } else {
             return true;
         }
     }
-    
-    public List<Arista> generaAristasAdyacentes(){
+
+    public List<Arista> generaAristasAdyacentes() {
         List<Arista> aristas = new ArrayList<Arista>();
-        for(Nodo nodo: this.listaAdyacencias)
-        {
+        for (Nodo nodo : this.listaAdyacencias) {
             aristas.add(new Arista(nodo));
         }
         return aristas;
@@ -132,9 +161,8 @@ public class Nodo implements Comparable<Nodo>{
                 + "X=" + x + ", Y= " + y
                 + '}';
     }
-    
-    
-     /**
+
+    /**
      * heuristica de Euclidiana raiz de la suma de los cuadrados Raiz((X -
      * X')**2 + (Y - Y')**2)
      *
@@ -169,9 +197,10 @@ public class Nodo implements Comparable<Nodo>{
     public void setfValor(double fValor) {
         this.fValor = fValor;
     }
+
     @Override
     public int compareTo(Nodo otherNodo) {
-        return Double.compare(this.fValor, otherNodo.getfValor() );
+        return Double.compare(this.fValor, otherNodo.getfValor());
     }
 
 }

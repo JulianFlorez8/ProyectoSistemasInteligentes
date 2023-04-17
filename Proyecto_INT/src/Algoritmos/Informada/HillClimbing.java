@@ -102,10 +102,21 @@ public class HillClimbing {
     }
 
     private void imprimir() {
-        for (Nodo nodo : camino) {
-            System.out.println(nodo.getNombre());
+         String impresion = "[";
+        for (Nodo tmp : camino) {
+            if(camino.indexOf(tmp)==camino.size()-1)
+            {
+                impresion += "(" + tmp.getNombre() + ")";
+                
+            }else{
+                impresion += "(" + tmp.getNombre() + "),";
+            }
+            
 
         }
+
+        System.out.println(impresion + "]");
+        
 
     }
 }

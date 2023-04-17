@@ -7,6 +7,8 @@ package Algoritmos.NoInformada;
 
 import Modelos.Nodo;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -34,7 +36,7 @@ public class BusquedadProfundidad {
             imprimir();
             return;
         }
-        for (Nodo v : nodo.getListaAdyacencias()) {
+        for (Nodo v : nodo.getListaAdyacenciasPrioridad()) {
 
             if (!v.isVisitado()) {
                 v.setVisitado(true);
@@ -43,6 +45,7 @@ public class BusquedadProfundidad {
             }
         }
     }
+
     //Iterativo
     public void iterativo(Nodo root, String buscado) {
         this.pila.add(root);
@@ -57,7 +60,9 @@ public class BusquedadProfundidad {
                 imprimir();
                 break;
             }
-            for (Nodo nodo : actualNodo.getListaAdyacencias()) {
+            List<Nodo> nodos = actualNodo.getListaAdyacenciasPrioridad();
+            Collections.reverse(nodos);
+            for (Nodo nodo : nodos) {
                 if (!nodo.isVisitado()) {
                     nodo.setVisitado(true);
                     nodo.setPredecesor(actualNodo);
@@ -70,25 +75,31 @@ public class BusquedadProfundidad {
     public ArrayList<Nodo> getCamino() {
         return camino;
     }
-    
-    private void plasmarCamino(Nodo nodo){
-         
-        camino.add(0,nodo);
-        if(nodo.getPredecesor()!=null && !nodo.getNombre().equals(raiz.getNombre()))
-        {
+
+    private void plasmarCamino(Nodo nodo) {
+
+        camino.add(0, nodo);
+        if (nodo.getPredecesor() != null && !nodo.getNombre().equals(raiz.getNombre())) {
             plasmarCamino(nodo.getPredecesor());
-            
+
         }
-        
+
     }
-    
-    private void imprimir(){
-        for(Nodo nodo: camino)
-        {
-           System.out.println(nodo.getNombre());
-            
+
+    private void imprimir() {
+        String impresion = "[";
+        for (Nodo tmp : camino) {
+            if (camino.indexOf(tmp) == camino.size() - 1) {
+                impresion += "(" + tmp.getNombre() + ")";
+
+            } else {
+                impresion += "(" + tmp.getNombre() + "),";
+            }
+
         }
-        
+
+        System.out.println(impresion + "]");
+
     }
 
 }

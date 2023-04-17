@@ -87,6 +87,25 @@ public class BeamSearch {
         }
         return beta;
     }
+    
+    private void imprimir(ArrayList<Nodo> camino) {
+        String impresion = "[";
+        for (Nodo tmp : camino) {
+            if(camino.indexOf(tmp)==camino.size()-1)
+            {
+                impresion += "(" + tmp.getNombre() + ")";
+                
+            }else{
+                impresion += "(" + tmp.getNombre() + "),";
+            }
+            
+
+        }
+
+        System.out.println(impresion + "]");
+
+
+    }
 
     public ArrayList<Nodo> getCamino(Nodo targetNodo) {
 
@@ -95,6 +114,7 @@ public class BeamSearch {
             pathList.add(nodo);
         }
         Collections.reverse(pathList);
+        imprimir(pathList);
         return pathList;
     }
 

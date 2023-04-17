@@ -20,6 +20,7 @@ import java.util.Stack;
 public class BusquedadAnchura {
 
     private ArrayList<Nodo> camino = new ArrayList<Nodo>();
+    
 
     public void bfs(Nodo root, String buscado) {
         System.out.println(root);
@@ -46,12 +47,22 @@ public class BusquedadAnchura {
                 }
 
                 // desapilamos los nodos de la pila para imprimirlos en orden
-                System.out.print(camino1.pop().getNombre());
+                String impresion ="[";
                 while (!camino1.isEmpty()) {
                     Nodo tmp = camino1.pop();
                     camino.add(tmp);
-                    System.out.print(" -> " + tmp.getNombre());
+                    if(camino1.size()==0)
+                    {
+                        impresion+="(" + tmp.getNombre()+")";
+                    }
+                    else{
+                    impresion+="(" + tmp.getNombre()+"),";    
+                    }
+                    
                 }
+                
+                System.out.println(impresion+"]");
+                System.out.println("Nivel encontrado: "+ (camino.size()));
 
                 break;
             }

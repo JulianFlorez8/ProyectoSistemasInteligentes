@@ -15,6 +15,7 @@ public class Arista {
     public double costo;
 
     public Arista() {
+        this.costo = 10;
     }
 
     public Nodo getOrigen() {

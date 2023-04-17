@@ -6,6 +6,7 @@
 package Algoritmos.Informada.aEstrella;
 
 import Algoritmos.Informada.HeuristicaEnum;
+import Modelos.Nodo;
 import java.util.*;
 
 /**
@@ -17,7 +18,7 @@ public class AEstrella {
     Set<Nodo> nodosVisitados = new HashSet<>();
 
     public void busquedadAEstrella(Nodo nodoOrigen, Nodo buscado, HeuristicaEnum heuristica) {
-        PriorityQueue<Nodo> noVisitados = new PriorityQueue<>();
+        PriorityQueue<Nodo> noVisitados = new PriorityQueue<Nodo>();
         nodoOrigen.setgValor(0); //gvalor es la distancia minima--> inicia en 0
         noVisitados.add(nodoOrigen);
         boolean isFound = false;
@@ -29,21 +30,22 @@ public class AEstrella {
             nodosVisitados.add(nodoActual);
 
             //verificamos si el nodo es el que buscamos
-            if (nodoActual.getValor().equals(buscado.getValor())) {
+            if (nodoActual.getNombre().equals(buscado.getNombre())) {
                 isFound = true;
+                break;
             }
 
             //recorremos todos las adyacencias
             //recorremos cada vecino y lo agregamos a visitados
-            for (Adyacencia e : nodoActual.getListaAdyacencias()) {
-                Nodo nodoHijo = e.getNodoObjetivo();
+            for (Nodo e : nodoActual.getListaAdyacencias()) {
+                Nodo nodoHijo = e;
                 double cost = e.getCosto(); // asignamos el costo
                 double tempGValor = nodoActual.getfValor() + cost;
                 //A*Search f(x) = g(x) + h(x)
                 //Calculamos el costo SEGUN  la heuristica
                 double tempFValor = 0;
                 if (heuristica == HeuristicaEnum.Manhattan) {
-                    tempFValor = tempGValor + heuristicaManhattan(nodoHijo, buscado); 
+                    tempFValor = tempGValor + heuristicaManhattan(nodoHijo, buscado);
                 } else if (heuristica == HeuristicaEnum.Euclidiana) {
                     tempFValor = tempGValor + heuristicaEuclidiana(nodoHijo, buscado);
                 }
@@ -52,24 +54,24 @@ public class AEstrella {
                 if (nodosVisitados.contains(nodoHijo) && tempFValor >= nodoHijo.getfValor()) {
                     continue;
                 } else if (!nodosVisitados.contains(nodoHijo) || tempFValor <= nodoHijo.getfValor()) {
-                    nodoHijo.setParentNodo(nodoActual);
+                    nodoHijo.setPredecesor(nodoActual);
                     nodoHijo.setgValor(tempGValor);
                     nodoHijo.setfValor(tempFValor);
 
                     if (noVisitados.contains(nodoHijo)) {
                         noVisitados.remove(nodoHijo);
                     }
-
                     noVisitados.add(nodoHijo);
+
                 }
             }
         }
     }
 
-    public List<Nodo> getRuta(Nodo targetNodo) {
+    public ArrayList<Nodo> getCamino(Nodo targetNodo) {
 
-        List<Nodo> pathList = new ArrayList<>();
-        for (Nodo nodo = targetNodo; nodo != null; nodo = nodo.getParentNodo()) {
+        ArrayList<Nodo> pathList = new ArrayList<>();
+        for (Nodo nodo = targetNodo; nodo != null; nodo = nodo.getPredecesor()) {
             pathList.add(nodo);
         }
         Collections.reverse(pathList);
@@ -89,13 +91,14 @@ public class AEstrella {
     }
 
     /**
-     * heuristica de Euclidiana raiz de la suma de los cuadrados Raiz((X - X')**2 + (Y - Y')**2)
+     * heuristica de Euclidiana raiz de la suma de los cuadrados Raiz((X -
+     * X')**2 + (Y - Y')**2)
      *
      * @param nodo1
      * @param nodo2
      * @return
      */
     private double heuristicaEuclidiana(Nodo nodo1, Nodo nodo2) {
-        return Math.sqrt(Math.pow((nodo1.getX() - nodo2.getX()), 2) + Math.pow((nodo1.getY() - nodo2.getY()),2));
+        return Math.sqrt(Math.pow((nodo1.getX() - nodo2.getX()), 2) + Math.pow((nodo1.getY() - nodo2.getY()), 2));
     }
 }

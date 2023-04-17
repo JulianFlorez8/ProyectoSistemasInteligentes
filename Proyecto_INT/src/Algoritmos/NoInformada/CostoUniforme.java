@@ -18,7 +18,7 @@ import static java.util.Objects.isNull;
 public class CostoUniforme {
 
     private final List<Nodo> posibles = new LinkedList<Nodo>();
-    private final List<Nodo> visitados = new LinkedList<>();
+    private final List<Nodo> visitados = new LinkedList<Nodo>();
 
     Optional<Nodo> search(final Map<String, List<Arista>> conexiones, final Nodo origen, final String destino) {
         if (isNull(origen)) {

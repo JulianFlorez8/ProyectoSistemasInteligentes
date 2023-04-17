@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Julian y Miguel
  */
-public class Nodo {
+public class Nodo implements Comparable<Nodo>{
 
     private String nombre;
     private boolean visitado;
@@ -22,6 +22,8 @@ public class Nodo {
     private double costo;
     private int x;
     private int y;
+    private double gValor;
+    private double fValor;
 
     public Nodo() {
     }
@@ -30,6 +32,7 @@ public class Nodo {
         this.nombre = nombre;
         this.x = x;
         this.y = y;
+        this.costo = 10;
         this.listaAdyacencias = new ArrayList<Nodo>();
     }
 
@@ -103,6 +106,26 @@ public class Nodo {
 
     public int getY() {
         return y;
+    }
+
+    public double getgValor() {
+        return gValor;
+    }
+
+    public void setgValor(double gValor) {
+        this.gValor = gValor;
+    }
+
+    public double getfValor() {
+        return fValor;
+    }
+
+    public void setfValor(double fValor) {
+        this.fValor = fValor;
+    }
+    @Override
+    public int compareTo(Nodo otherNodo) {
+        return Double.compare(this.fValor, otherNodo.getfValor() );
     }
 
 }

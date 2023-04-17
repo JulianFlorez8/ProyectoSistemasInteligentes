@@ -1,5 +1,7 @@
 package proyecto_int;
 
+import Algoritmos.Informada.HeuristicaEnum;
+import Algoritmos.Informada.aEstrella.AEstrella;
 import Algoritmos.NoInformada.BusquedadAnchura;
 import Algoritmos.NoInformada.BusquedadProfundidad;
 import Constantes.ConstantesGlobales;
@@ -57,7 +59,8 @@ public class Main extends Application {
             agregarAdyacencias();
             
             JOptionPane.showMessageDialog(null, "Mapa cargado correctamente");
-            String[] options = {"Anchura", "Profundidad recursivo", "Profundidad iterativo", "Costo Uniforme", "Beam Search", "Hill climbing", "A estrella"};
+            String[] options = {"Anchura", "Profundidad recursivo", "Profundidad iterativo", 
+                "Costo Uniforme", "Beam Search", "Hill climbing", "A estrella Euclidiana", "A estrella Manhattan"};
             selection = JOptionPane.showOptionDialog(null, "Tipo de algoritmo a aplicar:", "Hora de jugar Bomberman!", 0, 3, null, options, options[0]);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "No se logro cargar el mapa" + e);
@@ -115,11 +118,16 @@ public class Main extends Application {
             }
 
             case 6: {
-                aEstrella();
-                System.out.println("Ejecucion A*");
+                aEstrella(HeuristicaEnum.Euclidiana);
+                System.out.println("Ejecucion A* Euclidiana");
 
                 break;
 
+            }
+            case 7: {
+                aEstrella(HeuristicaEnum.Manhattan);
+                System.out.println("Ejecucion A* Manhattan");
+                break;
             }
 
             default: {
@@ -272,8 +280,11 @@ public class Main extends Application {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    private void aEstrella() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void aEstrella(HeuristicaEnum tipo) {
+        AEstrella algoritmo = new AEstrella();
+        algoritmo.busquedadAEstrella(nodoInicial, nodoFinal, tipo);
+        Mapa.getJugador().setCamino(algoritmo.getCamino(nodoFinal));
+        
     }
 
 }
